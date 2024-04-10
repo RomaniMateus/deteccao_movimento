@@ -30,8 +30,10 @@ while True:
         break
     gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    cv2.imshow("gray_frame", gray_frame)
+    diff = cv2.absdiff(gray_frame, gray_median_frame)
+    _, diff = cv2.threshold(diff, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
+    cv2.imshow("diff", diff)
     if cv2.waitKey(1) & 0xFF == ord("q"):
         cv2.destroyAllWindows()
         break
