@@ -26,24 +26,33 @@ def subtractor(algorithm):
 cap = cv2.VideoCapture(VIDEO)
 sub = subtractor(algorithm)
 
+e1 = cv2.getTickCount()
+
 
 def main():
+    frame_number = -1
 
     while cap.isOpened():
         ret, frame = cap.read()
+
         if not ret:
             print("Fim do vídeo")
             break
 
+        frame_number += 1
         frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
         mask = sub.apply(frame)
 
         cv2.imshow("frame", frame)
         cv2.imshow("mask", mask)
 
-        if cv2.waitKey(1) & 0xFF == ord("q"):
+        if cv2.waitKey(1) & 0xFF == ord("q") or frame_number > 300:
             cv2.destroyAllWindows()
             break
+
+        e2 = cv2.getTickCount()
+        time = (e2 - e1) / cv2.getTickFrequency()
+        print("Tempo de execução: ", time)
 
     cap.release()
 
